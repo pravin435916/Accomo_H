@@ -1,5 +1,5 @@
 'use client'
-import Demo from "../(components)/Demo/page";
+import Demo from "../Demo/page";
 export default function DemoPage(){
     return <Demo/>;
 }
