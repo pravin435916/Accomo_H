@@ -1,8 +1,11 @@
 'use client'
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 import { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
-import Locationinfo from '../LocationInfo';
-import icon from '../../assets/homeicon.png'
+import Locationinfo from "../Locationinfo"
+// import Locationinfo from './Componenets/Locationinfo/Locationinfo.jsx';
+const icon = "assets/homeicon.png";
 const Demo = () => {
     const [isComponentVisible, setIsComponentVisible] = useState(false);
     console.log(icon)
@@ -141,7 +144,7 @@ const Demo = () => {
     };
 
     return (
-        <div className="app-container ">
+        <div >
             <div className="input-container">
                 <input
                     type="text"
