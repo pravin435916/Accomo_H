@@ -10,8 +10,9 @@ const ownerSchema = new mongoose.Schema({
   vacantSeats: { type: Number, required: true },
   price: { type: Number },
   images: { type: [String] },
-  latitude: { type: Number, required: true },  // New field for latitude
-  longitude: { type: Number, required: true }, // New field for longitude
+  latitude: { type: Number, required: true },
+  longitude: { type: Number, required: true },
 });
 
+// Check if the model is already compiled
 export default mongoose.models.Owner || mongoose.model('Owner', ownerSchema);

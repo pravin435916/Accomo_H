@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-const Ownerform = () => {
+const OwnerForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -28,12 +28,12 @@ const Ownerform = () => {
   });
 
   const [imageFiles, setImageFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleTagKeyDown = (e) => {
@@ -41,7 +41,7 @@ const Ownerform = () => {
       e.preventDefault();
       const tagValue = e.target.value.trim();
       if (tagValue && !formData.nearbyColleges.includes(tagValue)) {
-        setFormData((prev) => ({
+        setFormData(prev => ({
           ...prev,
           nearbyColleges: [...prev.nearbyColleges, tagValue],
         }));
@@ -51,29 +51,31 @@ const Ownerform = () => {
   };
 
   const handleTagRemove = (tagToRemove) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      nearbyColleges: prev.nearbyColleges.filter((tag) => tag !== tagToRemove),
+      nearbyColleges: prev.nearbyColleges.filter(tag => tag !== tagToRemove),
     }));
   };
 
   const handleImageUpload = (e) => {
-    setImageFiles([...imageFiles, ...e.target.files]);
+    setImageFiles([...imageFiles, ...Array.from(e.target.files)]);
   };
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setFormData((prev) => ({
-          ...prev,
-          latitude: position.coords.latitude.toString(),
-          longitude: position.coords.longitude.toString(),
-        }));
-        console.log("Latitude:", position.coords.latitude);
-        console.log("Longitude:", position.coords.longitude);
-      }, (error) => {
-        console.error("Error fetching location:", error);
-      });
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setFormData(prev => ({
+            ...prev,
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString(),
+          }));
+        },
+        (error) => {
+          console.error("Error fetching location:", error);
+          setError("Unable to fetch current location");
+        }
+      );
     } else {
       alert("Geolocation is not supported by this browser.");
     }
@@ -81,33 +83,53 @@ const Ownerform = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    setLoading(true);
+    setError(null);
+
     try {
       const formPayload = new FormData();
-      Object.keys(formData).forEach((key) => {
-        formPayload.append(key, formData[key]);
+      Object.entries(formData).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach(v => formPayload.append(key, v));
+        } else {
+          formPayload.append(key, value);
+        }
       });
-  
-      // Append images to FormData
+
       imageFiles.forEach((file) => {
         formPayload.append("images", file);
       });
-  
+
       console.log("Submitting Form Data:", Array.from(formPayload.entries()));
-  
+
       await axios.post(`http://localhost:3000/api/owner`, formPayload, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       alert("Form submitted successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        mobileNumber: "",
+        nearbyColleges: [],
+        roomType: "Single",
+        totalRooms: "1",
+        vacantSeats: "0",
+        price: "0",
+        latitude: "",
+        longitude: "",
+        images: []
+      });
+      setImageFiles([]);
     } catch (error) {
       console.error("Submission error:", error);
-      alert("There was an error submitting the form.");
+      setError("There was an error submitting the form. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-  
 
   return (
     <Box
@@ -156,10 +178,7 @@ const Ownerform = () => {
           <Badge
             key={tag}
             badgeContent={
-              <IconButton
-                size="small"
-                onClick={() => handleTagRemove(tag)}
-              >
+              <IconButton size="small" onClick={() => handleTagRemove(tag)}>
                 <CloseIcon fontSize="small" />
               </IconButton>
             }
@@ -177,11 +196,9 @@ const Ownerform = () => {
         onChange={handleInputChange}
         sx={{ width: "50%" }}
       >
-        <MenuItem value="Single">Single</MenuItem>
-        <MenuItem value="Double">Double</MenuItem>
-        <MenuItem value="Triple">Triple</MenuItem>
-        <MenuItem value="Quad">Quad</MenuItem>
-        <MenuItem value="Suite">Suite</MenuItem>
+        {["Single", "Double", "Triple", "Quad", "Suite"].map((type) => (
+          <MenuItem key={type} value={type}>{type}</MenuItem>
+        ))}
       </TextField>
 
       <TextField
@@ -256,11 +273,13 @@ const Ownerform = () => {
         )}
       </Box>
 
-      <Button type="submit" variant="contained" color="primary">
-        Submit
+      {error && <Typography color="error">{error}</Typography>}
+
+      <Button type="submit" variant="contained" color="primary" disabled={loading}>
+        {loading ? "Submitting..." : "Submit"}
       </Button>
     </Box>
   );
 };
 
-export default Ownerform;
+export default OwnerForm;
