@@ -99,12 +99,10 @@ const Demo = () => {
             navigator.geolocation.getCurrentPosition(position => {
                 const { longitude, latitude } = position.coords;
                 const coordinates = [longitude, latitude];
-
                 map.current.flyTo({
                     center: coordinates,
                     zoom: 15
                 });
-
                 if (markerRef.current) {
                     markerRef.current.remove();
                 }
