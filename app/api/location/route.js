@@ -1,24 +1,15 @@
-import Owner from "../../models/owner.model.js";
-import dbConnect from "../../models/db.js";
+import { connect } from "../../models/db.js";
+import ownerModel from "../../models/owner.model";
+import { NextRequest, NextResponse } from "next/server";
 
-// Handle the GET request
-export const getOwnerLocation = async (req, res) => {
-    await dbConnect(); // Connect to the database
-
+export async function GET() {
     try {
-        const owners = await Owner.find({}, 'latitude longitude'); // Fetch latitude and longitude
-        res.status(200).json(owners);
+      await connect();
+      const owners = await ownerModel.find({},'latitude longitude'); // Fetch all owner records
+      return NextResponse.json(owners, { status: 200 });
     } catch (error) {
-        res.status(500).json({ error: 'Error fetching owner data' });
+      console.error("Error fetching owner data:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
-};
-
-// Export handlers for different HTTP methods
-export default async function handler(req, res) {
-    if (req.method === 'GET') {
-        return getOwnerLocation(req, res);
-    } else {
-        res.setHeader('Allow', ['GET']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
-}
+  }
+  
