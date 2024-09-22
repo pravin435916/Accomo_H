@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 export async function connect() {
-    if (mongoose.connection.readyState === 1) return;
+    // if (mongoose.connection.readyState === 1) return;
   try {
     const url = process.env.MONGO;
     mongoose.connect(url)

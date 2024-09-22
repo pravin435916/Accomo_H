@@ -97,6 +97,7 @@ const OwnerForm = () => {
       });
 
       imageFiles.forEach((file) => {
+        console.log(file)
         formPayload.append("images", file);
       });
 
