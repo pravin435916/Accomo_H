@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
     try {
       await connect();
-      const owners = await ownerModel.find({},'latitude longitude'); // Fetch all owner records
+      const owners = await ownerModel.find({},'name totalRooms vacantSeats mobileNumber roomType price latitude longitude'); // Fetch all owner records
       return NextResponse.json(owners, { status: 200 });
     } catch (error) {
       console.error("Error fetching owner data:", error);

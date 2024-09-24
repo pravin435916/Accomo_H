@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
 import { useState } from 'react';
 
-const Locationinfo = ({ hostel }) => {
+const Locationinfo = ({ hostel,onClose }) => {
     const [isVisible, setIsVisible] = useState(true);
 
   const handleClose = () => {
@@ -54,7 +54,7 @@ const Locationinfo = ({ hostel }) => {
     return (
                 <div className='main h-[100vh] w-[30vw] absolute z-50 top-0 left-0  bg-white m-auto '>
                   <div className='h-10 flex justify-end  '>
-                    <IconButton aria-label="close" onClick={handleClose}>
+                    <IconButton aria-label="close" onClick={onClose}>
                       <CloseIcon  />
                     </IconButton>
                   </div>
@@ -68,7 +68,7 @@ const Locationinfo = ({ hostel }) => {
                     </Slider>
                   </div>
                   <div className='h-10 pt-3 '>
-                    <h1 className='text-center font-sans font-extrabold text-2xl py-2 '>Ramdeobaba Hostel</h1>
+                    <h1 className='text-center font-sans font-extrabold text-2xl py-2 '>{hostel.name}</h1>
                   </div>
                   <div className='border-t-2 border-b-2 border-zinc-200 my-3 rounded-e-lg rounded-s-lg py-2 mt-4'>
                     <div className='flex justify-center'>
@@ -99,35 +99,35 @@ const Locationinfo = ({ hostel }) => {
                           className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
             
                           <td className="whitespace-nowrap px-6 py-4">Hostel Capacity</td>
-                          <td className="whitespace-nowrap px-6 py-4">100</td>
+                          <td className="whitespace-nowrap px-6 py-4">{hostel.totalRooms}</td>
             
                         </tr>
                         <tr
                           className="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
             
                           <td className="whitespace-nowrap px-6 py-4">Vacancy</td>
-                          <td className="whitespace-nowrap px-6 py-4">12</td>
+                          <td className="whitespace-nowrap px-6 py-4">{hostel.vacantSeats}</td>
             
                         </tr>
                         <tr
                           className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
             
-                          <td className="whitespace-nowrap px-6 py-4">AC /NON-AC</td>
-                          <td className="whitespace-nowrap px-6 py-4">NON -AC</td>
+                          <td className="whitespace-nowrap px-6 py-4">Mobile Number</td>
+                          <td className="whitespace-nowrap px-6 py-4">{hostel.mobileNumber}</td>
             
                         </tr>
                         <tr
                           className="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
             
-                          <td className="whitespace-nowrap px-6 py-4">MESS</td>
-                          <td className="whitespace-nowrap px-6 py-4">YES</td>
+                          <td className="whitespace-nowrap px-6 py-4">Room Type</td>
+                          <td className="whitespace-nowrap px-6 py-4">{hostel.roomType}</td>
             
                         </tr>
                         <tr
                           className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
             
-                          <td className="whitespace-nowrap px-6 py-4">GYM</td>
-                          <td className="whitespace-nowrap px-6 py-4">NA</td>
+                          <td className="whitespace-nowrap px-6 py-4">Price</td>
+                          <td className="whitespace-nowrap px-6 py-4">{hostel.price}</td>
             
                         </tr>
             

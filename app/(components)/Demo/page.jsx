@@ -216,7 +216,7 @@ const Demo = () => {
                 style: 'mapbox://styles/mapbox/streets-v11',
                 center: [79.06175104166927, 21.176851479950646],
                 zoom: 14,
-                // 21.176851479950646, 79.06175104166927
+                // 21.176851479950646, 79.06175104166927 ramdeobaba ka location
             });
 
             // Fetch owners' data when the map is loaded
@@ -262,7 +262,7 @@ const Demo = () => {
             });
         }
     }, [owners]); 
-
+    console.log(selectedHostel)
     return (
         <div>
             <div>
