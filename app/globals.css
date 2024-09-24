@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .map-container {
-    height: 400px;
+    height: 90vh;
   }
   
   

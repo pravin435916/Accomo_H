@@ -195,6 +195,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Locationinfo from '../Locationinfo';
+import Navbar from '@/app/(pages)/Navbar';
+
 
 const icon = '/assets/homeicon.png';
 
@@ -212,8 +214,9 @@ const Demo = () => {
             map.current = new mapboxgl.Map({
                 container: mapContainer.current,
                 style: 'mapbox://styles/mapbox/streets-v11',
-                center: [78.9629, 20.5937], // Default center (India)
-                zoom: 7,
+                center: [79.06175104166927, 21.176851479950646],
+                zoom: 14,
+                // 21.176851479950646, 79.06175104166927
             });
 
             // Fetch owners' data when the map is loaded
@@ -262,7 +265,10 @@ const Demo = () => {
 
     return (
         <div>
-            <div className="map-container" ref={mapContainer} ></div>
+            <div>
+            <Navbar/>
+            </div>
+            <div className="map-container mt-20" ref={mapContainer} ></div>
             {selectedHostel && (
                 <Locationinfo hostel={selectedHostel} onClose={() => setSelectedHostel(null)} />
             )}
