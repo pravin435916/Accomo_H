@@ -1,5 +1,5 @@
 import { connect } from "../../models/db";
-import ownerModel from "../../models/owner.model";
+import ownerModel from "@/app/models/owner.model";
 import { NextRequest, NextResponse } from "next/server";
 import multer from "multer";
 import cloudinary from "../../config/cloudinary";

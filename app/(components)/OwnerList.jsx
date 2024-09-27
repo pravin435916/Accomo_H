@@ -34,10 +34,10 @@ const OwnerList = () => {
 
   return (
     <div>
-      <h2>Owner List</h2>
+      <h2 className="font-bold text-3xl text-center">Owner List</h2>
       <ul>
         {owners.map((owner) => (
-          <li key={owner._id}>
+          <li key={owner._id} className="mt-5 bg-gray-200">
             <h3>{owner.name}</h3>
             {/* <p>Email: {owner.email}</p>
             <p>Mobile Number: {owner.mobileNumber}</p>

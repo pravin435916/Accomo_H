@@ -195,6 +195,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Locationinfo from '../Locationinfo';
+import Navbar from '@/app/(pages)/Navbar';
 
 const icon = '/assets/homeicon.png';
 
@@ -261,12 +262,15 @@ const Demo = () => {
     }, [owners]); 
 
     return (
+        <>
+        <Navbar/>
         <div>
             <div className="map-container" ref={mapContainer} ></div>
             {selectedHostel && (
                 <Locationinfo hostel={selectedHostel} onClose={() => setSelectedHostel(null)} />
             )}
         </div>
+            </>
     );
 };
 

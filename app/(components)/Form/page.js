@@ -58,7 +58,12 @@ const OwnerForm = () => {
   };
 
   const handleImageUpload = (e) => {
-    setImageFiles([...imageFiles, ...Array.from(e.target.files)]);
+    const files = Array.from(e.target.files);
+    setImageFiles((prevFiles) => [...prevFiles, ...files]);
+  };
+
+  const handleImageRemove = (index) => {
+    setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   const getCurrentLocation = () => {
@@ -97,11 +102,8 @@ const OwnerForm = () => {
       });
 
       imageFiles.forEach((file) => {
-        console.log(file)
         formPayload.append("images", file);
       });
-
-      console.log("Submitting Form Data:", Array.from(formPayload.entries()));
 
       await axios.post(`http://localhost:3000/api/owner`, formPayload, {
         headers: {
@@ -264,13 +266,34 @@ const OwnerForm = () => {
             type="file"
             hidden
             multiple
+            accept="image/*"
             onChange={handleImageUpload}
           />
         </Button>
         {imageFiles.length > 0 && (
-          <Typography variant="body2" mt={1}>
-            {imageFiles.length} files selected
-          </Typography>
+          <Box mt={2}>
+            <Typography variant="body2" gutterBottom>
+              Selected Images:
+            </Typography>
+            <Box display="flex" gap={2} flexWrap="wrap">
+              {imageFiles.map((file, index) => (
+                <Box key={index} position="relative">
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`preview-${index}`}
+                    style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 8 }}
+                  />
+                  <IconButton
+                    size="small"
+                    sx={{ position: "absolute", top: 0, right: 0, color: "red" }}
+                    onClick={() => handleImageRemove(index)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+              ))}
+            </Box>
+          </Box>
         )}
       </Box>
 
